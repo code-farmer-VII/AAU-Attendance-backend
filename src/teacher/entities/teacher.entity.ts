@@ -14,7 +14,4 @@ export class Teacher {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Field()
-  @Column()
-  college: string;
 }

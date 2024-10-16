@@ -29,4 +29,6 @@ export class Attendance {
   @Field(() => AttendanceStatus)
   @Column({ type: 'enum', enum: AttendanceStatus })
   status: AttendanceStatus;
+
+  
 }

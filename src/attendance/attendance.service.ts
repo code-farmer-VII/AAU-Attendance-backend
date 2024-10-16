@@ -13,10 +13,8 @@ export class AttendanceService {
   constructor(
     @InjectRepository(Attendance)
     private readonly attendanceRepository: Repository<Attendance>,
-
     @InjectRepository(Student)
     private readonly studentRepository: Repository<Student>, // Inject Student repository
-
     @InjectRepository(Teacher)
     private readonly teacherRepository: Repository<Teacher>, // Inject Teacher repository
   ) {}
@@ -27,6 +25,7 @@ export class AttendanceService {
     const { studentId, teacherId, attendanceDate, attendanceTime, status } = createAttendanceDto;
 
     // Check if the student exists
+    console.log(studentId)
     const student = await this.studentRepository.findOne({ where: { id: studentId } });
     if (!student) {
       console.log("###################")

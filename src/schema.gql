@@ -49,11 +49,11 @@ input CreateStudentDto {
 }
 
 input CreateTeacherDto {
-  college: String!
   user: CreateUserDto!
 }
 
 input CreateUserDto {
+  college: String!
   email: String!
   password: String!
   role: UserRole!
@@ -106,7 +106,6 @@ type Student {
 }
 
 type Teacher {
-  college: String!
   id: ID!
   user: User!
 }
@@ -138,12 +137,12 @@ input UpdateStudentInput {
 }
 
 input UpdateTeacherInput {
-  college: String
   id: Int!
   user: CreateUserDto
 }
 
 input UpdateUserInput {
+  college: String
   email: String
   id: Int!
   password: String
@@ -151,6 +150,7 @@ input UpdateUserInput {
 }
 
 type User {
+  college: String!
   email: String!
   id: ID!
   password: String!

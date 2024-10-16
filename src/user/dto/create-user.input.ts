@@ -18,4 +18,8 @@ export class CreateUserDto {
   @IsEnum(UserRole)
   @IsNotEmpty()
   role: UserRole;
+
+  @Field() // Define college as a GraphQL field
+  @IsNotEmpty()
+  college: string;
 }
