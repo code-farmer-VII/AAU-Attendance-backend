@@ -1,0 +1,163 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Attendance {
+  attendanceDate: String!
+  attendanceTime: String!
+  id: ID!
+  status: AttendanceStatus!
+  student: Student!
+  teacher: Teacher!
+}
+
+enum AttendanceStatus {
+  Absent
+  Late
+  Present
+}
+
+type CafeteriaAttendance {
+  attendanceDate: String!
+  attendanceTime: String!
+  id: ID!
+  mealTime: MealTime!
+  student: Student!
+}
+
+input CreateAttendanceDto {
+  attendanceDate: String!
+  attendanceTime: String!
+  status: AttendanceStatus!
+  studentId: Float!
+  teacherId: Float!
+}
+
+input CreateCafeteriaAttendanceDto {
+  attendanceDate: String!
+  attendanceTime: String!
+  mealTime: MealTime!
+  studentId: Float!
+}
+
+input CreateStudentDto {
+  college: String!
+  department: String!
+  name: String!
+  qrCode: String!
+  section: String!
+}
+
+input CreateTeacherDto {
+  college: String!
+  user: CreateUserDto!
+}
+
+input CreateUserDto {
+  email: String!
+  password: String!
+  role: UserRole!
+}
+
+enum MealTime {
+  Breakfast
+  Dinner
+  Lunch
+}
+
+type Mutation {
+  createAttendance(createAttendanceDto: CreateAttendanceDto!): Attendance!
+  createCafeteriaAttendance(createCafeteriaAttendanceDto: CreateCafeteriaAttendanceDto!): CafeteriaAttendance!
+  createStudent(createStudentDto: CreateStudentDto!): Student!
+  createTeacher(createTeacherDto: CreateTeacherDto!): Teacher!
+  createUser(createUserDto: CreateUserDto!): User!
+  deleteAttendance(id: Float!): Boolean!
+  removeCafeteriaAttendance(id: ID!): Boolean!
+  removeStudent(id: Float!): Boolean!
+  removeTeacher(id: Float!): Boolean!
+  removeUser(id: Float!): Boolean!
+  updateAttendance(id: Float!, updateAttendanceInput: UpdateAttendanceInput!): Attendance!
+  updateCafeteriaAttendance(id: ID!, updateCafeteriaAttendanceInput: UpdateCafteriaAttendanceInput!): CafeteriaAttendance!
+  updateStudent(updateStudentInput: UpdateStudentInput!): Student!
+  updateTeacher(updateTeacherInput: UpdateTeacherInput!): Teacher!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+}
+
+type Query {
+  cafeteriaAttendance(id: ID!): CafeteriaAttendance!
+  cafeteriaAttendances: [CafeteriaAttendance!]!
+  getAllAttendances: [Attendance!]!
+  getAttendanceById(id: Float!): Attendance!
+  student(id: Float!): Student!
+  students: [Student!]!
+  teacher(id: Float!): Teacher!
+  teachers: [Teacher!]!
+  user(id: Float!): User!
+  users: [User!]!
+}
+
+type Student {
+  college: String!
+  department: String!
+  id: ID!
+  name: String!
+  qrCode: String!
+  section: String!
+}
+
+type Teacher {
+  college: String!
+  id: ID!
+  user: User!
+}
+
+input UpdateAttendanceInput {
+  attendanceDate: String
+  attendanceTime: String
+  id: Int!
+  status: AttendanceStatus
+  studentId: Float
+  teacherId: Float
+}
+
+input UpdateCafteriaAttendanceInput {
+  attendanceDate: String
+  attendanceTime: String
+  id: Int!
+  mealTime: MealTime
+  studentId: Float
+}
+
+input UpdateStudentInput {
+  college: String
+  department: String
+  id: Int!
+  name: String
+  qrCode: String
+  section: String
+}
+
+input UpdateTeacherInput {
+  college: String
+  id: Int!
+  user: CreateUserDto
+}
+
+input UpdateUserInput {
+  email: String
+  id: Int!
+  password: String
+  role: UserRole
+}
+
+type User {
+  email: String!
+  id: ID!
+  password: String!
+  role: UserRole!
+}
+
+enum UserRole {
+  CafeteriaController
+  Teacher
+}
