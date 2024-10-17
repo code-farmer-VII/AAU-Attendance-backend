@@ -4,12 +4,15 @@ import { Repository } from 'typeorm';
 import { Teacher } from './entities/teacher.entity';
 import { CreateTeacherDto } from './dto/create-teacher.input';
 import { UpdateTeacherInput } from './dto/update-teacher.input';
+import { HttpService } from '@nestjs/axios';
+import {  UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
 export class TeacherService {
   constructor(
     @InjectRepository(Teacher)
     private readonly teacherRepository: Repository<Teacher>,
+    private readonly httpService: HttpService
   ) {}
 
   // Create a new Teacher
@@ -46,5 +49,20 @@ export class TeacherService {
   async remove(id: number): Promise<void> {
     const teacher = await this.findOne(id);
     await this.teacherRepository.remove(teacher);
+  }
+
+  async validateUser(token: string) {
+    try {
+      // Send a request to the authentication service to validate the JWT
+      const response = await this.httpService
+        .get('http://localhost:3000/auth/validate', {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .toPromise();
+
+      return response.data;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
   }
 }
