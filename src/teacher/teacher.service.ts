@@ -23,12 +23,14 @@ export class TeacherService {
 
   // Fetch all Teachers
   async findAll(): Promise<Teacher[]> {
-    return this.teacherRepository.find({ relations: ['user'] });
+    // return this.teacherRepository.find({ relations: ['user'] });
+    return this.teacherRepository.find();
   }
 
   // Find a Teacher by ID
   async findOne(id: number): Promise<Teacher> {
-    return this.teacherRepository.findOne({ where: { id }, relations: ['user'] });
+    // return this.teacherRepository.findOne({ where: { id }, relations: ['user'] });
+    return this.teacherRepository.findOne({ where: { id } });
   }
 
   // Update a Teacher

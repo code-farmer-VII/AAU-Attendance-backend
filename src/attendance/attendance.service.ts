@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Attendance } from './entities/attendance.entity';
@@ -7,9 +7,12 @@ import { Teacher } from 'src/teacher/entities/teacher.entity'; // Import Teacher
 import { CreateAttendanceDto } from './dto/create-attendance.input';
 import { UpdateAttendanceInput } from './dto/update-attendance.input';
 import { NotFoundException } from '@nestjs/common';
+import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
+
 
 @Injectable()
 export class AttendanceService {
+  private client: ClientProxy;
   constructor(
     @InjectRepository(Attendance)
     private readonly attendanceRepository: Repository<Attendance>,
@@ -17,22 +20,29 @@ export class AttendanceService {
     private readonly studentRepository: Repository<Student>, // Inject Student repository
     @InjectRepository(Teacher)
     private readonly teacherRepository: Repository<Teacher>, // Inject Teacher repository
-  ) {}
+  ) {
+    this.client = ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: ['amqp://localhost:5672'],
+        queue: 'auth_queue', // Send token verification request to Auth Service
+        queueOptions: {
+          durable: false,
+        },
+      },
+    });
+  }
 
   // Create Attendance
   async create(createAttendanceDto: CreateAttendanceDto): Promise<Attendance> {
-    console.log(" sol *************************** sol")
     const { studentId, teacherId, attendanceDate, attendanceTime, status } = createAttendanceDto;
 
     // Check if the student exists
-    console.log(studentId)
     const student = await this.studentRepository.findOne({ where: { id: studentId } });
     if (!student) {
-      console.log("###################")
 
       throw new NotFoundException(`Student with ID ${studentId} not found`);
     }
-        console.log("object")
     // Check if the teacher exists
     const teacher = await this.teacherRepository.findOne({ where: { id: teacherId } });
     if (!teacher) {
@@ -84,5 +94,17 @@ export class AttendanceService {
   async remove(id: number): Promise<void> {
     const attendance = await this.findOne(id); // Ensures the attendance exists
     await this.attendanceRepository.remove(attendance);
+  }
+
+  async checkAttendance(token: string) {
+    const isValidToken = await this.client.send<boolean>('verify_token', { token }).toPromise();
+      // Token is valid, process attendance check-in or check-out
+    if (isValidToken) {
+      return isValidToken;
+    } else {
+      // Invalid token, reject attendance
+      throw new UnauthorizedException('Invalid token');
+
+    }
   }
 }

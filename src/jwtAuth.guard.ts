@@ -1,10 +1,10 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { TeacherService } from './teacher/teacher.service';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { AttendanceService } from './attendance/attendance.service';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-  constructor(private readonly teacherService: TeacherService) {}
+  constructor(private readonly attendanceService: AttendanceService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ctx = context.getType() === 'http' ? context.switchToHttp().getRequest() : GqlExecutionContext.create(context).getContext().req;
@@ -15,7 +15,7 @@ export class JwtAuthGuard implements CanActivate {
       return false;
     }
 
-    const user = await this.teacherService.validateUser(token);
+    const user = await this.attendanceService.checkAttendance(token);
     ctx.user = user;
     return true;
   }

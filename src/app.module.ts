@@ -14,10 +14,13 @@ import { StudentModule } from './student/student.module';
 import { AttendanceModule } from './attendance/attendance.module';
 import { CafeteriaAttendanceModule } from './cafteria-attendance/cafteria-attendance.module';
 import { TeacherModule } from './teacher/teacher.module';
-import { UserModule } from './user/user.module';
+// import { UserModule } from './user/user.module';
+import { HttpModule } from '@nestjs/axios';
+
 
 @Module({
   imports: [
+    HttpModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,  // Explicitly define the driver as ApolloDriver
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
@@ -41,7 +44,7 @@ import { UserModule } from './user/user.module';
     AttendanceModule,
     CafeteriaAttendanceModule,
     TeacherModule,
-    UserModule
+    // UserModule
   ],
 
   controllers: [AppController],
