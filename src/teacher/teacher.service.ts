@@ -55,13 +55,13 @@ export class TeacherService {
 
   async validateUser(token: string) {
     try {
-      // Send a request to the authentication service to validate the JWT
+      // Assuming this is your auth validation endpoint
       const response = await this.httpService
         .get('http://localhost:3000/auth/validate', {
           headers: { Authorization: `Bearer ${token}` },
         })
         .toPromise();
-
+      console.log(response)
       return response.data;
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
