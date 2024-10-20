@@ -16,11 +16,9 @@ export class CafeteriaAttendanceService {
     private readonly studentRepository: Repository<Student>
   ) {}
 
-  // Create a new CafeteriaAttendance record
   async create(createCafeteriaAttendanceDto: CreateCafeteriaAttendanceDto): Promise<CafeteriaAttendance> {
     const { studentId, mealTime, attendanceDate, attendanceTime } = createCafeteriaAttendanceDto;
 
-    // Check if the student exists
     const student = await this.studentRepository.findOne({ where: { id: studentId } });
     if (!student) {
       throw new Error('Student not found');
@@ -36,12 +34,10 @@ export class CafeteriaAttendanceService {
     return this.cafeteriaAttendanceRepository.save(cafeteriaAttendance);
   }
 
-  // Find all CafeteriaAttendance records
   async findAll(): Promise<CafeteriaAttendance[]> {
     return this.cafeteriaAttendanceRepository.find({ relations: ['student'] });
   }
 
-  // Find a specific CafeteriaAttendance record by ID
   async findOne(id: number): Promise<CafeteriaAttendance> {
     const cafeteriaAttendance = await this.cafeteriaAttendanceRepository.findOne({
       where: { id },
@@ -55,11 +51,9 @@ export class CafeteriaAttendanceService {
     return cafeteriaAttendance;
   }
 
-  // Update a specific CafeteriaAttendance record by ID
   async update(id: number, updateCafeteriaAttendanceDto: UpdateCafteriaAttendanceInput): Promise<CafeteriaAttendance> {
     const cafeteriaAttendance = await this.findOne(id);
 
-    // Check and update fields
     if (updateCafeteriaAttendanceDto.mealTime) {
       cafeteriaAttendance.mealTime = updateCafeteriaAttendanceDto.mealTime;
     }
@@ -73,7 +67,6 @@ export class CafeteriaAttendanceService {
     return this.cafeteriaAttendanceRepository.save(cafeteriaAttendance);
   }
 
-  // Delete a CafeteriaAttendance record by ID
   async remove(id: number): Promise<void> {
     const cafeteriaAttendance = await this.findOne(id);
     await this.cafeteriaAttendanceRepository.remove(cafeteriaAttendance);

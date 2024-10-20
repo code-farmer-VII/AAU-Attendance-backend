@@ -15,7 +15,7 @@ export class StudentResolver {
   @Mutation(() => Student)
   async createStudent(
     @Args('createStudentDto') createStudentDto: CreateStudentDto,
-    // @CurrentUser() user: any // Here, the user is injected via the decorator
+    // @CurrentUser() user: any 
   ): Promise<Student> {
     return this.studentService.create(createStudentDto);
   }
@@ -36,7 +36,7 @@ export class StudentResolver {
   @Mutation(() => Student)
   async updateStudent(
     @Args('updateStudentInput') updateStudentInput: UpdateStudentInput,
-    // @CurrentUser() user: any // Inject the current user
+    // @CurrentUser() user: any 
   ): Promise<Student> {
     return this.studentService.update(updateStudentInput.id, updateStudentInput);
   }

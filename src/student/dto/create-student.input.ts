@@ -1,30 +1,30 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { Field, InputType } from '@nestjs/graphql'; // Import Field and InputType from @nestjs/graphql
+import { Field, InputType } from '@nestjs/graphql'; 
 import { PartialType } from '@nestjs/mapped-types';
 
-@InputType() // Make sure this class is recognized as an InputType in GraphQL
+@InputType() 
 export class CreateStudentDto {
-  @Field() // Mark the property as a GraphQL field
+  @Field() 
   @IsNotEmpty()
   @IsString()
   name: string;
 
-  @Field() // Mark the property as a GraphQL field
+  @Field() 
   @IsNotEmpty()
   @IsString()
   college: string;
 
-  @Field() // Mark the property as a GraphQL field
+  @Field() 
   @IsNotEmpty()
   @IsString()
   department: string;
 
-  @Field() // Mark the property as a GraphQL field
+  @Field() 
   @IsNotEmpty()
   @IsString()
   section: string;
 
-  @Field() // Mark the property as a GraphQL field
+  @Field() 
   @IsNotEmpty()
   @IsString()
   qrCode: string;

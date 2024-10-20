@@ -12,24 +12,21 @@ import { JwtAuthGuard } from 'src/jwtAuth.guard';
 export class CafeteriaAttendanceResolver {
   constructor(private readonly cafeteriaAttendanceService: CafeteriaAttendanceService) {}
 
-  // Mutation to create cafeteria attendance
   @UseGuards(JwtAuthGuard)
   @Mutation(() => CafeteriaAttendance)
   async createCafeteriaAttendance(
     @Args('createCafeteriaAttendanceDto') createCafeteriaAttendanceDto: CreateCafeteriaAttendanceDto,
-    @CurrentUser() user: any  // Optionally access the current authenticated user
+    @CurrentUser() user: any  
   ): Promise<CafeteriaAttendance> {
     return this.cafeteriaAttendanceService.create(createCafeteriaAttendanceDto);
   }
 
-  // Query to get all cafeteria attendances
   @UseGuards(JwtAuthGuard)
   @Query(() => [CafeteriaAttendance])
   async cafeteriaAttendances(): Promise<CafeteriaAttendance[]> {
     return this.cafeteriaAttendanceService.findAll();
   }
 
-  // Query to get one cafeteria attendance by ID
   @UseGuards(JwtAuthGuard)
   @Query(() => CafeteriaAttendance)
   async cafeteriaAttendance(
@@ -38,18 +35,16 @@ export class CafeteriaAttendanceResolver {
     return this.cafeteriaAttendanceService.findOne(id);
   }
 
-  // Mutation to update cafeteria attendance by ID
   @UseGuards(JwtAuthGuard)
   @Mutation(() => CafeteriaAttendance)
   async updateCafeteriaAttendance(
     @Args('id', { type: () => ID }) id: number,
     @Args('updateCafeteriaAttendanceInput') updateCafeteriaAttendanceInput: UpdateCafteriaAttendanceInput,
-    @CurrentUser() user: any  // Optionally access the current authenticated user
+    @CurrentUser() user: any  
   ): Promise<CafeteriaAttendance> {
     return this.cafeteriaAttendanceService.update(id, updateCafeteriaAttendanceInput);
   }
 
-  // Mutation to delete cafeteria attendance by ID
   @UseGuards(JwtAuthGuard)
   @Mutation(() => Boolean)
   async removeCafeteriaAttendance(

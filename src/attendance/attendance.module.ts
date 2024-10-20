@@ -10,11 +10,11 @@ import { TeacherModule } from 'src/teacher/teacher.module';
 @Module({
   imports: [
     TeacherModule,
-    TypeOrmModule.forFeature([Attendance, Student, Teacher]), // Import Attendance, Student, and Teacher entities
+    TypeOrmModule.forFeature([Attendance, Student, Teacher]), 
   ],
   providers: [
-    AttendanceService,  // Provide the service for handling logic
-    AttendanceResolver, // Provide the resolver for GraphQL
+    AttendanceService,  
+    AttendanceResolver, 
   ],
   exports: [AttendanceService],
 })

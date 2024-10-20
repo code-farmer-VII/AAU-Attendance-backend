@@ -7,13 +7,13 @@ import { TeacherModule } from 'src/teacher/teacher.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Student]), // Registering the Student entity with TypeORM
-    TeacherModule, // Importing TeacherModule for dependencies (e.g., GraphQL resolvers)
+    TypeOrmModule.forFeature([Student]), 
+    TeacherModule, 
   ],
   providers: [
-    StudentService, // Service responsible for business logic related to students
-    StudentResolver // Resolver that defines GraphQL queries and mutations for students
+    StudentService, 
+    StudentResolver 
   ],
-  exports: [StudentService], // Allows StudentService to be used by other modules if necessary
+  exports: [StudentService], 
 })
 export class StudentModule {}

@@ -2,8 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Attendance } from './entities/attendance.entity';
-import { Student } from 'src/student/entities/student.entity'; // Import Student entity
-import { Teacher } from 'src/teacher/entities/teacher.entity'; // Import Teacher entity
+import { Student } from 'src/student/entities/student.entity'; 
+import { Teacher } from 'src/teacher/entities/teacher.entity'; 
 import { CreateAttendanceDto } from './dto/create-attendance.input';
 import { UpdateAttendanceInput } from './dto/update-attendance.input';
 import { NotFoundException } from '@nestjs/common';
@@ -17,15 +17,15 @@ export class AttendanceService {
     @InjectRepository(Attendance)
     private readonly attendanceRepository: Repository<Attendance>,
     @InjectRepository(Student)
-    private readonly studentRepository: Repository<Student>, // Inject Student repository
+    private readonly studentRepository: Repository<Student>, 
     @InjectRepository(Teacher)
-    private readonly teacherRepository: Repository<Teacher>, // Inject Teacher repository
+    private readonly teacherRepository: Repository<Teacher>, 
   ) {
     this.client = ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
         urls: ['amqp://localhost:5672'],
-        queue: 'auth_queue', // Send token verification request to Auth Service
+        queue: 'auth_queue', 
         queueOptions: {
           durable: false,
         },
@@ -33,23 +33,19 @@ export class AttendanceService {
     });
   }
 
-  // Create Attendance
   async create(createAttendanceDto: CreateAttendanceDto): Promise<Attendance> {
     const { studentId, teacherId, attendanceDate, attendanceTime, status } = createAttendanceDto;
 
-    // Check if the student exists
     const student = await this.studentRepository.findOne({ where: { id: studentId } });
     if (!student) {
 
       throw new NotFoundException(`Student with ID ${studentId} not found`);
     }
-    // Check if the teacher exists
     const teacher = await this.teacherRepository.findOne({ where: { id: teacherId } });
     if (!teacher) {
       throw new NotFoundException(`Teacher with ID ${teacherId} not found`);
     }
 
-    // Create the attendance record and link student and teacher
     const attendance = this.attendanceRepository.create({
       student,
       teacher,
@@ -61,12 +57,10 @@ export class AttendanceService {
     return await this.attendanceRepository.save(attendance);
   }
 
-  // Get All Attendances
   async findAll(): Promise<Attendance[]> {
     return await this.attendanceRepository.find({ relations: ['student', 'teacher'] });
   }
 
-  // Get Attendance by ID
   async findOne(id: number): Promise<Attendance> {
     const attendance = await this.attendanceRepository.findOne({
       where: { id },
@@ -80,29 +74,24 @@ export class AttendanceService {
     return attendance;
   }
 
-  // Update Attendance
   async update(id: number, updateAttendanceInput: UpdateAttendanceInput): Promise<Attendance> {
-    const attendance = await this.findOne(id); // Ensures the attendance exists
+    const attendance = await this.findOne(id); 
 
-    // Update fields
     const updatedAttendance = Object.assign(attendance, updateAttendanceInput);
 
     return await this.attendanceRepository.save(updatedAttendance);
   }
 
-  // Delete Attendance
   async remove(id: number): Promise<void> {
-    const attendance = await this.findOne(id); // Ensures the attendance exists
+    const attendance = await this.findOne(id); 
     await this.attendanceRepository.remove(attendance);
   }
 
   async checkAttendance(token: string) {
     const isValidToken = await this.client.send<boolean>('verify_token', { token }).toPromise();
-      // Token is valid, process attendance check-in or check-out
     if (isValidToken) {
       return isValidToken;
     } else {
-      // Invalid token, reject attendance
       throw new UnauthorizedException('Invalid token');
 
     }
