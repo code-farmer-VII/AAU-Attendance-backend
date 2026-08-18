@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql'; 
 import { PartialType } from '@nestjs/mapped-types';
 
@@ -28,4 +28,9 @@ export class CreateStudentDto {
   @IsNotEmpty()
   @IsString()
   qrCode: string;
+
+  @Field()  
+  @IsNotEmpty()
+  @IsNumber() 
+  teacherId: number; 
 }

@@ -46,6 +46,7 @@ input CreateStudentDto {
   name: String!
   qrCode: String!
   section: String!
+  teacherId: Float!
 }
 
 input CreateTeacherDto {
@@ -91,6 +92,7 @@ type Student {
   name: String!
   qrCode: String!
   section: String!
+  teacher: Teacher!
 }
 
 type Teacher {
@@ -122,6 +124,7 @@ input UpdateStudentInput {
   name: String
   qrCode: String
   section: String
+  teacherId: Float
 }
 
 input UpdateTeacherInput {
